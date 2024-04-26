@@ -7,6 +7,7 @@ import {
 import "./index.css";
 import App from "./pages/App";
 import Root from "./pages/Root";
+import About from "./pages/About";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
       },
       {
         path:"/about-us",
-        element: <App />,
+        element: <About />,
       },
     ]
   },

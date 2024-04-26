@@ -1,7 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import { LuSendHorizonal } from "react-icons/lu";
 
-export default function InputBox() {
+export default function InputBox({
+  setOpenChat,
+  addPrompt,
+  isDisable,
+}) {
   const [value, setValue] = useState("");
   const textAreaRef = useRef(null);
 
@@ -11,18 +15,37 @@ export default function InputBox() {
     const val = evt.target?.value;
     setValue(val);
   };
+
+  function handleSubmit() {
+    setOpenChat(true);
+    addPrompt(value);
+    setValue("");
+  }
   return (
     <section className="p-4 grid place-content-center relative">
-      <form className="bg-[#20322E] max-w-[900px] p-6 rounded-lg flex justify-between shadow-lg absolute bottom-0 left-[50%] -translate-x-[50%] gap-2">
-        <input type="text" placeholder='Enter a prompt here' className='bg-transparent outline-none text-white w-[100dvh]'/>
+      <form
+        className="bg-[#20322E] w-[90%] max-w-[800px] p-4 rounded-lg grid grid-cols-[1fr,auto] justify-between shadow-lg fixed bottom-5 left-[50%] -translate-x-[50%] gap-2 border border-[#ffffff40]"
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (isDisable) return;
+          handleSubmit();
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Enter a prompt here"
+          className="bg-transparent outline-none text-white w-[100dvh]"
+          onChange={handleChange}
+          value={value}
+        />
         {/* <textarea name="" id="" cols="30" rows="3" className='bg-transparent outline-none text-white w-[100dvh]'></textarea> */}
         {/* <label htmlFor="review-text">Review:</label> */}
         {/* <textarea
           id="review-text"
           onChange={handleChange}
-          placeholder="What did you like or dislike?"
+          placeholder="Enter a prompt here"
           ref={textAreaRef}
-          className="bg-transparent outline-none text-white w-[100dvh]"
+          className="bg-transparent outline-none text-white w-full max-h-[150px]"
           rows={1}
           value={value}
         /> */}
