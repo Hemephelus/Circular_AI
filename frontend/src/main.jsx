@@ -5,11 +5,24 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import "./index.css";
+import App from "./pages/App";
+import Root from "./pages/Root";
+import About from "./pages/About";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Circular AI</div>,
+    element: <Root />,
+    children:[
+      {
+        path:"/",
+        element: <App />,
+      },
+      {
+        path:"/about-us",
+        element: <About />,
+      },
+    ]
   },
 ]);
 
