@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, abort
-from services import prompts, vector_search
+from services import prompts, vector_search, query_list
 
 app = Flask("__name__")
 
@@ -15,7 +15,9 @@ def predict():
         abort(400, description="Missing 'user_message' in request.")
 
     try:
-        retrieved_doc = vector_search.retrieve_query(query)
+        related_query_list = query_list.generate_queries(query)
+        retrieved_doc = vector_search.retrieve_query(related_query_list)
+        # print(retrieved_doc)
     except Exception as e:
         app.logger.error("Error retrieving document: %s", e)
         abort(500, description="Failed to retrieve document for the provided query.")

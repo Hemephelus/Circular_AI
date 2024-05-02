@@ -32,3 +32,14 @@ class GeminiEmbeddings:
             return embedding
 
         raise ValueError("Data type not allowed: Expected 'str' or 'list' type.")
+
+    
+# Write a string to a text file
+def write_to_file(file_path, content):
+    with open(file_path, 'w') as file:
+        file.write(content)
+
+# Read the content of a text file into a variable
+def read_from_file(file_path):
+    with open(file_path, 'r') as file:
+        return file.read()

@@ -1,3 +1,4 @@
+import ast
 from config.utils import GeminiEmbeddings
 from config.env_var import EnvVariable
 from pinecone import Pinecone, ServerlessSpec
@@ -26,27 +27,26 @@ except Exception as e:
 
 gmd = GeminiEmbeddings()
 
-def retrieve_query(query):
-    if not isinstance(query, str) or not query:
-        raise ValueError("Query must be a non-empty string.")
-
-    try:
-        vector = gmd.embed(query)
-    except Exception as e:
-        raise RuntimeError("Failed to generate embeddings: {}".format(e))
-    
-    try:
-        results = index.query(
-            namespace=NAMESPACE,
-            vector=vector,
-            top_k=1,
-            include_metadata=True
+def get_embedding(user_query):
+        user_query_list = ast.literal_eval(user_query)    
+        embedding = []
+        for text in user_query_list:
+            text = text.replace("\n", " ")
+            embedding.append(gmd.embed(text))
+        return embedding
+            
+def retrieve_query(user_query):
+    vector = get_embedding(user_query)
+    results = index.query(
+        namespace=NAMESPACE,
+        vector=vector,
+        top_k=1,
+        include_metadata=True
         )['matches']
-    except Exception as e:
-        raise RuntimeError("Query execution failed: {}".format(e))
 
     retrieved_doc = ''
     for i, result in enumerate(results):
-        retrieved_doc += '\n\n\n SOURCE DOCUMENT \n\n'
-        retrieved_doc += ' ' + result['metadata']['text'] + result['metadata']['source']+ result['metadata']['date']
+        retrieved_doc = retrieved_doc + f'\n\n\n SOURCE DOCUMENT'
+        retrieved_doc = retrieved_doc + ' ' + result['metadata']['text'] + result['metadata']['source']+ result['metadata']['date']
     return retrieved_doc
+
