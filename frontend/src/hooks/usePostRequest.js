@@ -1,11 +1,12 @@
 import { useState } from "react";
 
-function usePostRequest(url, bodyData) {
+function usePostRequest(url) {
   const [response, setResponse] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const postRequest = async () => {
+  const postRequest = async (bodyData) => {
     setIsLoading(true);
+    setResponse(null);
     try {
       const options = {
         method: "POST",
@@ -14,8 +15,6 @@ function usePostRequest(url, bodyData) {
         },
         body: JSON.stringify(bodyData),
       };
-      
-      console.log(options);
       const response = await fetch(url, options);
 
       const responseData = await response.json();

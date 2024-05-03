@@ -7,26 +7,27 @@ import usePostRequest from "../hooks/usePostRequest";
 export default function App() {
   const CIRCULAR_AI_URL = "http://circular-ai.azurewebsites.net/v1";
   const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState('What is the latest CBN policy on BDC?');
+  const [message, setMessage] = useState("");
   const [openChat, setOpenChat] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
-  const [response, isLoading, error, postRequest] = usePostRequest(
-    CIRCULAR_AI_URL,
-    {
-      user_message: message,
-    }
-  );
-
+  const [response, isLoading, error, postRequest] =
+    usePostRequest(CIRCULAR_AI_URL);
 
   function addPrompt(prompt) {
-    setMessage(prompt)
     setIsDisable(true);
-    let newMessages = [...messages];
+    let newMessages = messages.map((message) => {
+      return { ...message };
+    });
+
     newMessages.push({
       prompt,
+      response: undefined,
     });
+
     setMessages(newMessages);
-    postRequest()
+    postRequest({
+      user_message: prompt,
+    });
   }
 
   return (
@@ -51,7 +52,6 @@ export default function App() {
           addPrompt={addPrompt}
           isDisable={isDisable}
           setIsDisable={setIsDisable}
-          
         />
       </main>
     </section>

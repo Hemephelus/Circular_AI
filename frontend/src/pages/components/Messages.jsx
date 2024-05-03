@@ -11,14 +11,39 @@ function Messages({
 }) {
   return (
     <div className=" overflow-y-auto max-h-[500px] max-w-[800px]  grid gap-8 p-4 w-full">
-      {messages?.map((sample, index) => (
-        <section className="grid gap-2" key={index}>
+      {messages
+        .filter((a) => a.response !== undefined)
+        ?.map((sample, index) => (
+          <section className="grid gap-2" key={index}>
+            <div className="py-2 flex w-full gap-2">
+              <figure className="w-[25px] h-[25px] rounded-full bg-white text-[#20322E] grid place-content-center font-medium">
+                S
+              </figure>
+              <p className="line-clamp-3 hover:line-clamp-none duration-300 text-sm md:text-base font-normal ">
+                {sample.prompt}
+              </p>
+            </div>
+            <div className="py-4 flex w-full border-b border-[#ffffff40] gap-2 items-start  font-extralight">
+              <img src={icon} alt="Circular AI" />
+              <div className="flex flex-col w-full gap-2 ">
+                <p className="duration-300 text-sm md:text-base ">
+                  {sample.response}
+                </p>
+              </div>
+            </div>
+          </section>
+        ))}
+
+      {messages[messages.length - 1]["response"] ? (
+        <></>
+      ) : (
+        <section>
           <div className="py-2 flex w-full gap-2">
             <figure className="w-[25px] h-[25px] rounded-full bg-white text-[#20322E] grid place-content-center font-medium">
               S
             </figure>
             <p className="line-clamp-3 hover:line-clamp-none duration-300 text-sm md:text-base font-normal ">
-              {sample.prompt}
+              {messages[messages.length - 1]["prompt"]}
             </p>
           </div>
           <div className="py-4 flex w-full border-b border-[#ffffff40] gap-2 items-start  font-extralight">
@@ -26,8 +51,7 @@ function Messages({
             <PromptResponse
               messages={messages}
               setMessages={setMessages}
-              prompt={sample.prompt}
-              index={index}
+              index={messages.length - 1}
               setIsDisable={setIsDisable}
               response={response}
               isLoading={isLoading}
@@ -35,7 +59,7 @@ function Messages({
             />
           </div>
         </section>
-      ))}
+      )}
     </div>
   );
 }
@@ -49,19 +73,19 @@ function PromptResponse({
   setIsDisable,
   error,
 }) {
-
-
+  
   useEffect(() => {
     if (response) {
-      setIsDisable(false)
+      setIsDisable(false);
       addResponse(response);
     }
   }, [response]);
 
-
   function addResponse(response) {
-    let newMessages = [...messages];
-    newMessages[index]["response"] = response;
+    let newMessages = messages.map((message) => {
+      return { ...message };
+    });
+    newMessages[index]["response"] = response.response;
     setMessages(newMessages);
   }
 
@@ -87,9 +111,7 @@ function PromptResponse({
 
   return (
     <div className="flex flex-col w-full gap-2 ">
-      <p className="duration-300 text-sm md:text-base ">
-          {response.response}
-      </p>
+      <p className="duration-300 text-sm md:text-base ">{response.response}</p>
     </div>
   );
 }
