@@ -5,9 +5,8 @@ import Messages from "./components/Messages";
 import usePostRequest from "../hooks/usePostRequest";
 
 export default function App() {
-  const CIRCULAR_AI_URL = "http://circular-ai.azurewebsites.net/v1";
+  const CIRCULAR_AI_URL = "https://circular-ai.azurewebsites.net/v1";
   const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState("");
   const [openChat, setOpenChat] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
   const [response, isLoading, error, postRequest] =
