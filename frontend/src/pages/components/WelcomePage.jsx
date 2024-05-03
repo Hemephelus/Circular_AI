@@ -3,16 +3,16 @@ import React from "react";
 function WelcomePage({ setOpenChat, addPrompt }) {
   const samples = [
     {
-      prompt: "Why is Nigerian’s exchange rate so high?",
+      prompt: "Is there any policy on lending rates?",
     },
     {
       prompt: "What is the latest CBN policy on BDC?",
     },
     {
-      prompt: "What CBN policies do Nigeria Fintech start ups need to know?",
+      prompt: "Will CBN convert the dollars in my dom account to naira?",
     },
     {
-      prompt: "What does the new Collateral policy mean for my fintech app?",
+      prompt: "Are there any policies on exports?",
     },
   ];
 

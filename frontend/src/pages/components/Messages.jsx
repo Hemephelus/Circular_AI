@@ -19,7 +19,7 @@ function Messages({
               <figure className="w-[25px] h-[25px] rounded-full bg-white text-[#20322E] grid place-content-center font-medium">
                 S
               </figure>
-              <p className="line-clamp-3 hover:line-clamp-none duration-300 text-sm md:text-base font-normal ">
+              <p className="text-sm md:text-base font-normal w-fit">
                 {sample.prompt}
               </p>
             </div>
@@ -42,7 +42,7 @@ function Messages({
             <figure className="w-[25px] h-[25px] rounded-full bg-white text-[#20322E] grid place-content-center font-medium">
               S
             </figure>
-            <p className="line-clamp-3 hover:line-clamp-none duration-300 text-sm md:text-base font-normal ">
+            <p className="text-sm md:text-base font-normal w-fit">
               {messages[messages.length - 1]["prompt"]}
             </p>
           </div>
