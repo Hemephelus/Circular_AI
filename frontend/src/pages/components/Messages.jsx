@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import icon from "../../assets/icon.svg";
 
-function Messages({ messages, setMessages, setIsDisable }) {
+function Messages({
+  messages,
+  setMessages,
+  setIsDisable,
+  response,
+  isLoading,
+  error,
+}) {
   return (
     <div className=" overflow-y-auto max-h-[500px] max-w-[800px]  grid gap-8 p-4 w-full">
       {messages?.map((sample, index) => (
@@ -22,6 +29,9 @@ function Messages({ messages, setMessages, setIsDisable }) {
               prompt={sample.prompt}
               index={index}
               setIsDisable={setIsDisable}
+              response={response}
+              isLoading={isLoading}
+              error={error}
             />
           </div>
         </section>
@@ -33,39 +43,21 @@ function Messages({ messages, setMessages, setIsDisable }) {
 function PromptResponse({
   messages,
   setMessages,
-  prompt,
   index = 0,
+  response,
+  isLoading,
   setIsDisable,
+  error,
 }) {
-  const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(false);
+
 
   useEffect(() => {
-    if (isLoading) {
-      let endRoll = 0;
-      let interval;
-      interval = setInterval(() => {
-        if (endRoll < 30) {
-          endRoll++;
-        } else {
-          clearInterval(interval);
-          setIsLoading(false);
-          setIsDisable(false);
-          setData(` Lorem ipsum dolor sit amet, consectetur adipisicing elit. In
-          perspiciatis minus soluta enim quis minima nostrum ipsum laboriosam?
-          Libero consequuntur recusandae repudiandae quasi similique quaerat
-          exercitationem maxime consectetur aspernatur magni!`);
-        }
-      }, 300);
+    if (response) {
+      setIsDisable(false)
+      addResponse(response);
     }
-  }, []);
+  }, [response]);
 
-  useEffect(() => {
-    if (data) {
-      addResponse(data);
-    }
-  }, [data]);
 
   function addResponse(response) {
     let newMessages = [...messages];
@@ -86,16 +78,17 @@ function PromptResponse({
 
   // ERROR PAGE
   if (error) {
-    return <div className="">Error: {error.message}</div>;
+    return (
+      <div className="bg-red-500 p-4 font-light rounded">
+        Error: Something went wrong with Circular AI. Please try again :)
+      </div>
+    );
   }
 
   return (
     <div className="flex flex-col w-full gap-2 ">
-      <p className="line-clamp-3 hover:line-clamp-none duration-300 text-sm md:text-base ">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. In
-        perspiciatis minus soluta enim quis minima nostrum ipsum laboriosam?
-        Libero consequuntur recusandae repudiandae quasi similique quaerat
-        exercitationem maxime consectetur aspernatur magni!
+      <p className="duration-300 text-sm md:text-base ">
+          {response.response}
       </p>
     </div>
   );

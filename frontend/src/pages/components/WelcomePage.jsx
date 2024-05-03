@@ -6,7 +6,7 @@ function WelcomePage({ setOpenChat, addPrompt }) {
       prompt: "Why is Nigerian’s exchange rate so high?",
     },
     {
-      prompt: "What does the new Collateral policy mean for my fintech app?",
+      prompt: "What is the latest CBN policy on BDC?",
     },
     {
       prompt: "What CBN policies do Nigeria Fintech start ups need to know?",

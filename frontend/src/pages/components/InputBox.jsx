@@ -27,7 +27,7 @@ export default function InputBox({
         className="bg-[#20322E] w-[90%] max-w-[800px] p-4 rounded-lg grid grid-cols-[1fr,auto] justify-between shadow-lg fixed bottom-5 left-[50%] -translate-x-[50%] gap-2 border border-[#ffffff40]"
         onSubmit={(e) => {
           e.preventDefault();
-          if (isDisable) return;
+          if (isDisable || value.trim() === '') return;
           handleSubmit();
         }}
       >
@@ -38,17 +38,6 @@ export default function InputBox({
           onChange={handleChange}
           value={value}
         />
-        {/* <textarea name="" id="" cols="30" rows="3" className='bg-transparent outline-none text-white w-[100dvh]'></textarea> */}
-        {/* <label htmlFor="review-text">Review:</label> */}
-        {/* <textarea
-          id="review-text"
-          onChange={handleChange}
-          placeholder="Enter a prompt here"
-          ref={textAreaRef}
-          className="bg-transparent outline-none text-white w-full max-h-[150px]"
-          rows={1}
-          value={value}
-        /> */}
         <button className="text-[#ffffff]">
           <LuSendHorizonal size={24} />
         </button>

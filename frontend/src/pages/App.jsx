@@ -1,22 +1,32 @@
-import { Link } from "react-router-dom";
 import InputBox from "./components/InputBox";
 import { useState } from "react";
-// import logo from "../assets/Logo.svg";
 import WelcomePage from "./components/WelcomePage";
 import Messages from "./components/Messages";
+import usePostRequest from "../hooks/usePostRequest";
 
 export default function App() {
+  const CIRCULAR_AI_URL = "http://circular-ai.azurewebsites.net/v1";
   const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState('What is the latest CBN policy on BDC?');
   const [openChat, setOpenChat] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
+  const [response, isLoading, error, postRequest] = usePostRequest(
+    CIRCULAR_AI_URL,
+    {
+      user_message: message,
+    }
+  );
+
 
   function addPrompt(prompt) {
+    setMessage(prompt)
     setIsDisable(true);
     let newMessages = [...messages];
     newMessages.push({
       prompt,
     });
     setMessages(newMessages);
+    postRequest()
   }
 
   return (
@@ -28,6 +38,9 @@ export default function App() {
               messages={messages}
               setMessages={setMessages}
               setIsDisable={setIsDisable}
+              isLoading={isLoading}
+              error={error}
+              response={response}
             />
           ) : (
             <WelcomePage setOpenChat={setOpenChat} addPrompt={addPrompt} />
@@ -38,6 +51,7 @@ export default function App() {
           addPrompt={addPrompt}
           isDisable={isDisable}
           setIsDisable={setIsDisable}
+          
         />
       </main>
     </section>
